@@ -1,25 +1,23 @@
+// ContactList.jsx
 import React, { useEffect } from 'react';
 import css from './ContactList.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchContacts, selectAllContacts } from '../../redux/contactSlice';
 import { ContactElem } from '../ContactElem/ContactElem';
+import { getFilter } from '../../redux/select'; 
 
 const ContactList = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(selectAllContacts);
+  const filter = useSelector(getFilter);
 
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
-  const filteredContactsList = (contacts, filter) => {
-    const normalizedFilter = filter.toLowerCase();
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalizedFilter)
-    );
-  };
-
-  const filteredContacts = filteredContactsList(contacts, ""); // You can pass the filter value if needed
+  const filteredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
 
   return (
     <div className={css.contBox}>
