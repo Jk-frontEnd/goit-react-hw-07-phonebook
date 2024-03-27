@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import css from './ContactList.module.css';
-import { getContacts, getFilter } from '../../redux/select';
-import {ContactElem} from '../ContactElem/ContactElem'; 
-import { useSelector } from 'react-redux';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchContacts, selectAllContacts } from '../../redux/contactSlice';
+import { ContactElem } from '../ContactElem/ContactElem';
 
 const ContactList = () => {
-  const contacts = useSelector(getContacts);
-  const filter = useSelector(getFilter);
+  const dispatch = useDispatch();
+  const contacts = useSelector(selectAllContacts);
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   const filteredContactsList = (contacts, filter) => {
     const normalizedFilter = filter.toLowerCase();
@@ -16,14 +19,14 @@ const ContactList = () => {
     );
   };
 
-  const filteredContacts = filteredContactsList(contacts, filter);
+  const filteredContacts = filteredContactsList(contacts, ""); // You can pass the filter value if needed
 
   return (
     <div className={css.contBox}>
       <h2 className={css.header}>Contacts</h2>
       <ul>
-        {filteredContacts.map(({id, name, number}) => (
-          <ContactElem key={id} contact={{id, name, number}} />
+        {filteredContacts.map(({ id, name, number }) => (
+          <ContactElem key={id} contact={{ id, name, number }} />
         ))}
       </ul>
     </div>
