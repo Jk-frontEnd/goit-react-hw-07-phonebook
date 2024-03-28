@@ -1,4 +1,3 @@
-// ContactList.jsx
 import React, { useEffect } from 'react';
 import css from './ContactList.module.css';
 import { useSelector, useDispatch } from 'react-redux';
@@ -22,11 +21,16 @@ const ContactList = () => {
   return (
     <div className={css.contBox}>
       <h2 className={css.header}>Contacts</h2>
-      <ul>
+      {contacts.length > 0 ? (
+        <ul>
         {filteredContacts.map(({ id, name, number }) => (
           <ContactElem key={id} contact={{ id, name, number }} />
         ))}
       </ul>
+      ) : (
+      <p>You have no contacts saved yet. Add some to view contact list.</p>
+      )}
+      
     </div>
   );
 };
